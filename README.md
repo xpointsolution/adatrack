@@ -6,7 +6,7 @@
 <p align="center">
   <a href="https://github.com/xpointsolution/adatrack/releases"><img src="https://img.shields.io/github/v/release/xpointsolution/adatrack?style=flat-square" alt="Latest Release"></a>
   <a href="https://github.com/xpointsolution/adatrack/pkgs/container/adatrack"><img src="https://img.shields.io/badge/GHCR-Docker%20Image-blue?style=flat-square&logo=docker" alt="Docker Image"></a>
-  <a href="https://discord.gg/ZBmmBTAz"><img src="https://img.shields.io/discord/1234567890?style=flat-square&logo=discord&label=Discord" alt="Discord"></a>
+  <a href="https://discord.gg/yR7hqPqCG"><img src="https://img.shields.io/discord/1234567890?style=flat-square&logo=discord&label=Discord" alt="Discord"></a>
 </p>
 
 ---
@@ -95,7 +95,7 @@ ADATRACK_LICENSE_KEY=eyJhbGciOiJFZERTQSIs...
 ADATRACK_LICENSE_FILE=/path/to/license.adatrack.lic
 ```
 
-See the [Licensing documentation](https://docs.adatrack.io) for full details.
+See the [Licensing documentation](https://adatrack-io.gitbook.io/) for full details.
 
 ## Prerequisites
 
@@ -127,21 +127,22 @@ sudo sysctl -w net.core.netdev_max_backlog=5000
 
 ## Documentation
 
-Full documentation is available at **[docs.adatrack.io](https://docs.adatrack.io)**.
+Full documentation is available at **[adatrack-io.gitbook.io](https://adatrack-io.gitbook.io/)**.
 
-- [Self-Hosted Deployment Guide](https://docs.adatrack.io)
-- [Licensing & Tiers](https://docs.adatrack.io)
-- [UDP Protocol & HMAC Authentication](https://docs.adatrack.io)
-- [Writing Payload Decoders](https://docs.adatrack.io)
-- [Geofencing & Alerts](https://docs.adatrack.io)
-- [Workflow Automation](https://docs.adatrack.io)
+- [Self-Hosted Deployment Guide](https://adatrack-io.gitbook.io/)
+- [Licensing & Tiers](https://adatrack-io.gitbook.io/)
+- [UDP Protocol & HMAC Authentication](https://adatrack-io.gitbook.io/)
+- [Writing Payload Decoders](https://adatrack-io.gitbook.io/)
+- [Geofencing & Alerts](https://adatrack-io.gitbook.io/)
+- [Workflow Automation](https://adatrack-io.gitbook.io/)
 
 ## Community & Support
 
-- [Discord](https://discord.gg/ZBmmBTAz) -- Chat with the team and other developers
+- [Discord](https://discord.gg/yR7hqPqCG) -- Chat with the team and other developers
 - [GitHub Issues](https://github.com/xpointsolution/adatrack/issues) -- Bug reports and feature requests
 - [Email Support](mailto:support@adatrack.io) -- For Enterprise and Standard license holders
 
 ## Security
 
 If you discover a security vulnerability, please report it responsibly by emailing [security@adatrack.io](mailto:security@adatrack.io). Do not open a public issue.
+
