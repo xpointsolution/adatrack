@@ -6,7 +6,7 @@
 <p align="center">
   <a href="https://github.com/xpointsolution/adatrack/releases"><img src="https://img.shields.io/github/v/release/xpointsolution/adatrack?style=flat-square" alt="Latest Release"></a>
   <a href="https://github.com/xpointsolution/adatrack/pkgs/container/adatrack"><img src="https://img.shields.io/badge/GHCR-Docker%20Image-blue?style=flat-square&logo=docker" alt="Docker Image"></a>
-  <a href="https://discord.gg/yR7hqPqCG"><img src="https://img.shields.io/discord/1234567890?style=flat-square&logo=discord&label=Discord" alt="Discord"></a>
+  <a href="https://discord.gg/sdZjavNUtS"><img src="https://img.shields.io/discord/1476212814413561858?style=flat-square&logo=discord&label=Discord" alt="Discord"></a>
 </p>
 
 ---
@@ -138,7 +138,7 @@ Full documentation is available at **[adatrack-io.gitbook.io](https://adatrack-i
 
 ## Community & Support
 
-- [Discord](https://discord.gg/yR7hqPqCG) -- Chat with the team and other developers
+- [Discord](https://discord.gg/sdZjavNUtS) -- Chat with the team and other developers
 - [GitHub Issues](https://github.com/xpointsolution/adatrack/issues) -- Bug reports and feature requests
 - [Email Support](mailto:support@adatrack.io) -- For Enterprise and Standard license holders
 
