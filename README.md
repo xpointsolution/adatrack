@@ -17,7 +17,8 @@ AdaTrack is a production-grade IoT platform built for high-throughput telemetry 
 
 - **UDP-First Ingestion** -- Kernel-tuned Go backend handles millions of packets with microsecond latency
 - **Dynamic Payload Decoders** -- Define binary-to-JSON decoders in JavaScript and update them live, no restarts
-- **Real-Time Tracking** -- GPU-accelerated map rendering (Deck.gl + Mapbox) for thousands of simultaneous assets
+- **Real-Time Tracking** -- GPU-accelerated map rendering (Deck.gl) for thousands of simultaneous assets
+- **Self-Hosted Maps** -- Built-in OpenStreetMap tile server with globe projection. No Mapbox account needed for self-hosted deployments
 - **Geofencing & Alerts** -- PostGIS-powered virtual boundaries with instant multi-channel notifications
 - **No-Code Workflows** -- Trigger automated actions based on telemetry events or threshold breaches
 - **Interactive Dashboards** -- Drag-and-drop dashboard builder with charts, maps, and live data widgets
@@ -43,6 +44,8 @@ services:
       - JWT_SECRET=your-secure-secret
     depends_on:
       - db
+    volumes:
+      - tiles:/data/tiles
   db:
     image: timescale/timescaledb:latest-pg16
     environment:
@@ -51,6 +54,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 volumes:
   pgdata:
+  tiles:
 ```
 
 ```bash
@@ -71,9 +75,53 @@ Download the latest binaries for your platform from [Releases](https://github.co
 | macOS | arm64 (Apple Silicon) | `adatrack-darwin-arm64` | `adatrack-ctl-darwin-arm64` |
 | Windows | amd64 | `adatrack-windows-amd64.exe` | `adatrack-ctl-windows-amd64.exe` |
 
+## Self-Hosted Maps
+
+In self-hosted mode, AdaTrack renders maps using OpenStreetMap data served directly from the backend. No Mapbox account, API token, or internet connection required after initial setup.
+
+### Setting Up Map Tiles
+
+After starting AdaTrack, download the map tiles for your region:
+
+```bash
+# 1. Download the world base layer (~100 MB) for global coverage when zoomed out
+docker exec adatrack ./adatrack-ctl tiles download --region=world-base --data-path=/data/tiles --yes
+
+# 2. Download your regional tiles for detailed roads, buildings, and labels
+docker exec adatrack ./adatrack-ctl tiles download --region=united-states --data-path=/data/tiles --yes
+```
+
+The map renders immediately -- no restart needed. Three styles are included: Positron (light), Dark Matter (dark), and OSM Bright (streets), with globe projection and automatic theme switching.
+
+### Available Regions
+
+Use `adatrack-ctl tiles download --region=list` to see all options. Some examples:
+
+| Region | Estimated Size |
+| :--- | :--- |
+| `world-base` | ~100 MB |
+| `united-kingdom` | ~1.1 GB |
+| `germany` | ~3.8 GB |
+| `united-states` | ~8.5 GB |
+| `europe` | ~25 GB |
+
+### Air-Gapped Environments
+
+If your server has no internet access, download tiles on a connected machine and import them:
+
+```bash
+# On a connected machine
+adatrack-ctl tiles download --region=united-states --output=/tmp/tiles
+
+# Transfer to the air-gapped server and import
+adatrack-ctl tiles download --file=/path/to/united-states.pmtiles
+```
+
+> SaaS deployments continue to use Mapbox with zero changes. The self-hosted tile server activates automatically when no Mapbox token is configured.
+
 ## adatrack-ctl
 
-`adatrack-ctl` is the command-line tool for managing self-hosted installations. It handles database setup, schema migrations, backups, health checks, and configuration generation. All schema migrations are embedded in the binary -- there are no separate SQL files to manage.
+`adatrack-ctl` is the command-line tool for managing self-hosted installations. It handles database setup, schema migrations, backups, health checks, configuration generation, and map tile management. All schema migrations are embedded in the binary -- there are no separate SQL files to manage.
 
 ```bash
 adatrack-ctl install        # Set up database schema from scratch
@@ -86,6 +134,10 @@ adatrack-ctl backup         # Create a database backup (pg_dump wrapper)
 adatrack-ctl restore        # Restore from backup
 adatrack-ctl init-config    # Generate a starter .env file
 adatrack-ctl uninstall      # Remove all AdaTrack tables
+adatrack-ctl tiles download # Download map tiles for a region
+adatrack-ctl tiles list     # Show installed tilesets
+adatrack-ctl tiles status   # Tile storage overview
+adatrack-ctl tiles remove   # Remove a tileset
 ```
 
 ### First-Time Setup
@@ -101,7 +153,11 @@ adatrack-ctl validate
 # 3. Install the schema (creates extensions + applies all migrations)
 adatrack-ctl install --create-extensions
 
-# 4. Start the server
+# 4. Download map tiles
+adatrack-ctl tiles download --region=world-base
+adatrack-ctl tiles download --region=united-states
+
+# 5. Start the server
 ./adatrack
 ```
 
@@ -133,6 +189,7 @@ The tool is included in the Docker image and can be used via `docker exec`:
 ```bash
 docker exec adatrack ./adatrack-ctl status
 docker exec adatrack ./adatrack-ctl doctor
+docker exec adatrack ./adatrack-ctl tiles status --data-path=/data/tiles
 ```
 
 See the [full CLI reference](https://adatrack-io.gitbook.io/) for all commands and flags.
@@ -180,6 +237,8 @@ See the [Licensing documentation](https://adatrack-io.gitbook.io/) for full deta
 | `ADATRACK_PORT` | HTTP port | `8080` |
 | `ADATRACK_UDP_PORT` | UDP ingestion port | `1234` |
 | `ADATRACK_LOG_LEVEL` | `DEBUG`, `INFO`, `WARN`, `ERROR` | `INFO` |
+| `TILES_ENABLED` | Enable the self-hosted map tile server | `true` in self-hosted mode |
+| `TILES_DATA_PATH` | Directory containing tile files | `./data/tiles` |
 
 > **Tip:** Use `adatrack-ctl init-config` to generate a complete `.env` file with all supported variables, defaults, and documentation comments.
 
